@@ -1,0 +1,79 @@
+#!/usr/bin/env python
+
+import argparse
+import glob
+import re
+
+PURPLE = '\033[95m'
+CYAN = '\033[96m'
+DARKCYAN = '\033[36m'
+BLUE = '\033[94m'
+GREEN = '\033[92m'
+YELLOW = '\033[93m'
+RED = '\033[91m'
+BOLD = '\033[1m'
+UNDERLINE = '\033[4m'
+END = '\033[0m'
+
+def pretty_print(colors, text, cr=True):
+    if type(colors) == list:
+        pre = ''.join(colors)
+    else:
+        pre = colors
+
+    if cr:
+        print(pre + text + END)
+    else:
+        print(pre + text + END, end="")
+
+def pretty_format(colors, text):
+    if type(colors) == list:
+        pre = ''.join(colors)
+    else:
+        pre = colors
+
+    return(pre + text + END)
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description='Generates documentation for Meteor Collections.'
+    )
+    parser.add_argument(
+        'source',
+        help='The glob-pattern file[s] (js) to read from'
+    )
+
+    args = parser.parse_args()
+
+    files = glob.glob(args.source)
+
+    if files == []:
+        files = glob.glob('./lib/collections/' + args.source + "*")
+
+    for f in files:
+        content = open(f, 'r').read().split('*/')[0][3:].split('\n')
+
+        # print the title of the file
+        pretty_print([BOLD, GREEN], f.split('/')[-1][:-3])
+
+        # print the help text
+        for line in content:
+            line = "\t" + line
+            if line != "" and line[-1] == ":":
+                pretty_print([PURPLE, UNDERLINE], line)
+            elif re.search('(\w*) \((.*)\): (.*)', line):
+                groups = re.search('(\w*) \((.*)\): (.*)', line)
+                print('\t\t', end="")
+                print(
+                    pretty_format(YELLOW, groups.group(1)),
+                    "(",
+                    pretty_format(DARKCYAN, groups.group(2)),
+                    ")",
+                    groups.group(3)
+                )
+            else:
+                print(line)
+
+if __name__ == "__main__":
+    main()
