@@ -8,6 +8,8 @@ alias coldoc="/absolute/path/to/coldoc"
 ```
 
 ## Usage:
+Unless you pass a file path, you should run this from the root directory of your Meteor app; i.e. the parent directory of `/lib`.
+
 Show docs for one collection:
 ```
 coldoc Admins
@@ -16,6 +18,11 @@ coldoc Admins
 Show docs for all collections:
 ```
 coldoc ""
+```
+
+Show docs for all collections starting with "A":
+```
+coldoc A
 ```
 
 Show docs for a particular file:
