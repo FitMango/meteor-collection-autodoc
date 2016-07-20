@@ -17,7 +17,7 @@ coldoc Admins
 
 Show docs for all collections:
 ```
-coldoc ""
+coldoc
 ```
 
 Show docs for all collections starting with "A":
