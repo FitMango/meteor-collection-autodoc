@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 
 import argparse
 import glob
@@ -41,7 +42,9 @@ def main():
     )
     parser.add_argument(
         'source',
-        help='The glob-pattern file[s] (js) to read from'
+        help='The glob-pattern file[s] (js) to read from',
+        nargs='?',
+        default=''
     )
 
     args = parser.parse_args()
